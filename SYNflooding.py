@@ -39,7 +39,7 @@ while count < 100:
     pseudo_iphdr = iphdr[12:] + b'\x00\x06\x00\x14'
     chsum_tcp = checksum(pseudo_iphdr+tcphdr)
     chsum_ip = checksum(iphdr)
-    tchphdr = bytearray(tcphdr) # both headers are not mutable in Python
+    tcphdr = bytearray(tcphdr) # both headers are not mutable in Python
     iphdr = bytearray(iphdr) #convert them into bytearray
     iphdr[10] = chsum_ip//256
     iphdr[11] = chsum_ip%256
