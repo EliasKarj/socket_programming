@@ -39,7 +39,7 @@ while count < 100:
     pseudo_iphdr = iphdr[12:] + b'\x00\x06\x00\x14'
     chsum_tcp = checksum(pseudo_iphdr+tcphdr)
     chsum_ip = checksum(iphdr)
-    iphdr[10] = chsum_ip/256
+    iphdr[10] = chsum_ip//256
     iphdr[11] = chsum_ip%256
     tcphdr[16] = chsum_tcp//256
     tcphdr[17] = chsum_tcp%256
