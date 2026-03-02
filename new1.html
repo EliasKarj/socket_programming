@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head><title>WebSocket</title></head>
+  <body>
+    <script>
+      var ws = new WebSocket("ws://192.168.73.126:11111/"),
+	  
+          messages = document.createElement('ul');
+	  var curr, prev = new Date().getTime();
+      ws.onmessage = function (event) {
+		curr = new Date().getTime();
+		var diff = curr-prev;
+		prev = curr;
+        var messages = document.getElementsByTagName('ul')[0],
+        message = document.createElement('li'),
+        content = document.createTextNode(event.data + ' ' + diff);
+        message.appendChild(content);
+        messages.appendChild(message);
+		if(messages.childElementCount>10)
+			messages.removeChild(messages.firstChild);
+      };
+      document.body.appendChild(messages);
+    </script>
+  </body>
+</html>
