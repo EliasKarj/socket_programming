@@ -15,6 +15,8 @@
         message = document.createElement('li'),
         content = document.createTextNode(event.data + ' ' + diff);
         message.appendChild(content);
+		      if(diff<1500) message.style.color = 'red'
+          if(diff>3500)message.style.color = 'green'
         messages.appendChild(message);
 		if(messages.childElementCount>10)
 			messages.removeChild(messages.firstChild);
